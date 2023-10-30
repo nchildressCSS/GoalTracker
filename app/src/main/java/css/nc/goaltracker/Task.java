@@ -1,13 +1,15 @@
 package css.nc.goaltracker;
 
-// Task.java
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//Task Class.
 public class Task implements Parcelable {
+    //Task Variables.
     private String title;
     private boolean completed;
 
+    //Task Constructor.
     public Task(String title) {
         this.title = title;
         this.completed = false;
@@ -17,16 +19,7 @@ public class Task implements Parcelable {
         return title;
     }
 
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    // Parcelable implementation
-
+//Parcel Code written by ChatGPT.
     protected Task(Parcel in) {
         title = in.readString();
         completed = in.readByte() != 0;

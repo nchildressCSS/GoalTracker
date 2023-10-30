@@ -1,6 +1,5 @@
 package css.nc.goaltracker;
 
-// TaskAdapter.java
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +8,21 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.Iterator;
 import java.util.List;
 
+//Task Adapter Class.
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
+    //Variables Declaration.
     private List<Task> tasks;
     private List<Task> selectedTasks;
 
+    //Constructor.
     public TaskAdapter(List<Task> tasks, List<Task> selectedTasks) {
         this.tasks = tasks;
         this.selectedTasks = selectedTasks;
     }
 
+    //Create View holder and inflate with item xml.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,6 +30,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    //Bind View Holder filled with task information.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = tasks.get(position);
@@ -35,6 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.completedCheckBox.setChecked(selectedTasks.contains(task));
 
         holder.completedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //check if task is checked or not and remove if checked.
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -51,6 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return tasks.size();
     }
 
+    //Creates Recyclerview.
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         CheckBox completedCheckBox;
