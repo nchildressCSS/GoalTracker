@@ -1,47 +1,85 @@
 package css.nc.goaltracker;
 
-// AddTaskActivity.java
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+// AddTaskActivity Class.
 public class AddTaskActivity extends AppCompatActivity {
-    //Variable Declaration.
+
+    // Create ViewModel.
     private TaskViewModel taskViewModel;
+
+    // Create Key.
     public static final String EXTRA_TASK = "extra_task";
+
+    //Check if result is false.
+    private boolean isTaskResultSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("AddTaskActivity", "onCreate called");
+
+        // Set the current layout for activity add task.
         setContentView(R.layout.activity_add_task);
 
-        //Set View Model up.
+        // Initialize the ViewModel for this activity.
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
-        //Initialize edit text field and save button from xml.
+        //Get UI from XML.
         EditText taskEditText = findViewById(R.id.taskEditText);
         Button saveButton = findViewById(R.id.saveButton);
 
-        //Create listener for save button.
+        // Set a click listener for the Save Button.
         saveButton.setOnClickListener(new View.OnClickListener() {
-            //Create logic when the save button is clicked.
             @Override
             public void onClick(View view) {
+                // Get the task title from the EditText.
                 String taskTitle = taskEditText.getText().toString();
-                if (!taskTitle.isEmpty()) {
-                    Task newTask = new Task(taskTitle);
 
+                // Check if the task title is not empty.
+                if (!taskTitle.isEmpty()) {
+                    // Create a new Task object.
+                    Task newTask = new Task(taskTitle, false);
+
+                    // Insert the new task using the ViewModel.
+                    taskViewModel.insertTask(newTask);
+
+                    // Prepare an Intent to pass the new task to the calling activity.
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(EXTRA_TASK, newTask);
+
+                    // Set the result code and include the Intent data.
                     setResult(RESULT_OK, resultIntent);
+
+                    // Finish the activity.
                     finish();
+                    Log.d("AddTaskActivity", "Finish Called");
                 }
             }
         });
     }
-}
 
+    // Written by ChatGPT.
+    @Override
+    public void finish() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(EXTRA_TASK, false);
+
+        if (!isTaskResultSet) {
+
+            setResult(RESULT_OK, resultIntent);
+
+
+            isTaskResultSet = true;
+        }
+
+        super.finish();
+    }
+}
